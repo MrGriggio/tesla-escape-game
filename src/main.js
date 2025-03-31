@@ -28,34 +28,47 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+// Texture loader with error handling
+const textureLoader = new THREE.TextureLoader();
+const loadTexture = (path, fallbackColor = 0x808080) => {
+    const texture = textureLoader.load(
+        path,
+        undefined,
+        undefined,
+        () => {
+            console.warn(`Failed to load texture: ${path}`);
+            material.color.setHex(fallbackColor);
+        }
+    );
+    return texture;
+};
+
 // Car setup
 const carGeometry = new THREE.PlaneGeometry(4, 1.5);
-const carTexture = new THREE.TextureLoader().load('/tesla-escape-game/Car/model3.png');
-const boostedCarTexture = new THREE.TextureLoader().load('/tesla-escape-game/Perks/car boosted.png');
-const carMaterial = new THREE.MeshBasicMaterial({ map: carTexture, transparent: true });
+const carTexture = loadTexture('/tesla-escape-game/Car/model3.png', 0x4287f5);
+const boostedCarTexture = loadTexture('/tesla-escape-game/Perks/car boosted.png', 0xff4400);
+const carMaterial = new THREE.MeshBasicMaterial({ 
+    map: carTexture, 
+    transparent: true,
+    color: 0xffffff 
+});
 const car = new THREE.Mesh(carGeometry, carMaterial);
 car.position.set(0, 0, 0);
 scene.add(car);
 
 // Road setup
 const roadGeometry = new THREE.PlaneGeometry(800, 4.5);
-const roadTexture = new THREE.TextureLoader().load('/tesla-escape-game/road/road.png');
-roadTexture.wrapS = THREE.RepeatWrapping;
-roadTexture.wrapT = THREE.RepeatWrapping;
-roadTexture.repeat.set(100, 1);
-const roadMaterial = new THREE.MeshBasicMaterial({ map: roadTexture });
+const roadMaterial = new THREE.MeshBasicMaterial({ 
+    color: 0x333333,
+    side: THREE.DoubleSide
+});
 const road = new THREE.Mesh(roadGeometry, roadMaterial);
 scene.add(road);
 
 // Background setup
-const grassTexture = new THREE.TextureLoader().load('/tesla-escape-game/Background/grass.png');
-grassTexture.wrapS = THREE.RepeatWrapping;
-grassTexture.wrapT = THREE.RepeatWrapping;
-grassTexture.repeat.set(10, 1);
-
 const grassGeometry = new THREE.PlaneGeometry(2000, 2000);
 const grassMaterial = new THREE.MeshBasicMaterial({ 
-    map: grassTexture, 
+    color: 0x228B22,
     transparent: true,
     depthWrite: false 
 });
@@ -64,10 +77,9 @@ grassBackground.position.set(0, -0.5, -50);
 grassBackground.rotation.x = -Math.PI / 2;
 scene.add(grassBackground);
 
-const skyTexture = new THREE.TextureLoader().load('/tesla-escape-game/Background/sky and hills.png');
 const skyGeometry = new THREE.PlaneGeometry(2000, 800);
 const skyMaterial = new THREE.MeshBasicMaterial({ 
-    map: skyTexture, 
+    color: 0x87CEEB,
     transparent: true,
     depthWrite: false 
 });
@@ -87,8 +99,10 @@ function createObstacleGeometry(type) {
     if (type === 'standing') {
         const standingGeometry = new THREE.PlaneGeometry(6, 8);
         const randomNum = Math.floor(Math.random() * 3) + 1;
-        const standingTexture = new THREE.TextureLoader().load(`/tesla-escape-game/stand enemies/${randomNum}.png`);
-        const standingMaterial = new THREE.MeshBasicMaterial({ map: standingTexture, transparent: true });
+        const standingMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0xff0000,
+            transparent: true 
+        });
         const standingEnemy = new THREE.Mesh(standingGeometry, standingMaterial);
         
         // Create a smaller collision box (invisible)
@@ -102,27 +116,65 @@ function createObstacleGeometry(type) {
         group.add(collisionBox);
         
         standingEnemy.position.y = 4;
+        
+        // Load texture asynchronously
+        loadTexture(`/tesla-escape-game/stand enemies/${randomNum}.png`, 0xff0000)
+            .then(texture => {
+                standingMaterial.map = texture;
+                standingMaterial.needsUpdate = true;
+            });
+        
         return group;
     } else {
         const geometry = new THREE.PlaneGeometry(4, 2);
         const randomNum = Math.floor(Math.random() * 5) + 1;
-        const texture = new THREE.TextureLoader().load(`/tesla-escape-game/mov enemies/${randomNum}.png`);
-        const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+        const material = new THREE.MeshBasicMaterial({ 
+            color: 0xff0000,
+            transparent: true 
+        });
+        
+        // Load texture asynchronously
+        loadTexture(`/tesla-escape-game/mov enemies/${randomNum}.png`, 0xff0000)
+            .then(texture => {
+                material.map = texture;
+                material.needsUpdate = true;
+            });
+        
         return new THREE.Mesh(geometry, material);
     }
 }
 
 function createCoinGeometry() {
     const geometry = new THREE.PlaneGeometry(2, 2);
-    const texture = new THREE.TextureLoader().load('/tesla-escape-game/Perks/coin.png');
-    const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+    const material = new THREE.MeshBasicMaterial({ 
+        color: 0xffd700,
+        transparent: true 
+    });
+    
+    // Load texture asynchronously
+    loadTexture('/tesla-escape-game/Perks/coin.png', 0xffd700)
+        .then(texture => {
+            material.map = texture;
+            material.needsUpdate = true;
+        });
+    
     return new THREE.Mesh(geometry, material);
 }
 
 function createRaptorBoostGeometry() {
     const geometry = new THREE.PlaneGeometry(2, 2);
-    const texture = new THREE.TextureLoader().load('/tesla-escape-game/Perks/raptor_boost.png');
-    const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+    const material = new THREE.MeshBasicMaterial({ 
+        color: 0xff4400,
+        transparent: true 
+    });
+    
+    // Load texture asynchronously
+    loadTexture('/tesla-escape-game/Perks/boost.png', 0xff4400)
+        .then(texture => {
+            material.map = texture;
+            material.needsUpdate = true;
+        });
+    
     return new THREE.Mesh(geometry, material);
 }
 
@@ -596,10 +648,10 @@ function animate() {
         car.position.x = camera.position.x;
         
         // Update road texture offset for scrolling effect
-        roadTexture.offset.x += gameState.speed * 0.1;
+        roadMaterial.color.setHex(0x333333 + (Math.sin(Date.now() * 0.005) * 0x101010));
         
         // Update grass texture offset
-        grassTexture.offset.x += gameState.speed * 0.05;
+        grassMaterial.color.setHex(0x228B22 + (Math.sin(Date.now() * 0.005) * 0x008B00));
         
         // Spawn and update obstacles
         spawnObstacle();
