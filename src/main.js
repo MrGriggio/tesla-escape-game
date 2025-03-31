@@ -30,8 +30,8 @@ document.body.appendChild(renderer.domElement);
 
 // Car setup
 const carGeometry = new THREE.PlaneGeometry(4, 1.5);
-const carTexture = new THREE.TextureLoader().load('assets/car/normal.png');
-const boostedCarTexture = new THREE.TextureLoader().load('assets/car/boosted.png');
+const carTexture = new THREE.TextureLoader().load('assets/Car/normal.png');
+const boostedCarTexture = new THREE.TextureLoader().load('assets/Car/boosted.png');
 const carMaterial = new THREE.MeshBasicMaterial({ map: carTexture, transparent: true });
 const car = new THREE.Mesh(carGeometry, carMaterial);
 car.position.set(0, 0, 0);
@@ -48,7 +48,7 @@ const road = new THREE.Mesh(roadGeometry, roadMaterial);
 scene.add(road);
 
 // Background setup
-const grassTexture = new THREE.TextureLoader().load('assets/background/grass.png');
+const grassTexture = new THREE.TextureLoader().load('assets/Background/grass.png');
 grassTexture.wrapS = THREE.RepeatWrapping;
 grassTexture.wrapT = THREE.RepeatWrapping;
 grassTexture.repeat.set(10, 1);
@@ -64,7 +64,7 @@ grassBackground.position.set(0, -0.5, -50);
 grassBackground.rotation.x = -Math.PI / 2;
 scene.add(grassBackground);
 
-const skyTexture = new THREE.TextureLoader().load('assets/background/sky and hills.png');
+const skyTexture = new THREE.TextureLoader().load('assets/Background/sky and hills.png');
 const skyGeometry = new THREE.PlaneGeometry(2000, 800);
 const skyMaterial = new THREE.MeshBasicMaterial({ 
     map: skyTexture, 
@@ -86,7 +86,7 @@ const raptorBoostPool = [];
 function createObstacleGeometry(type) {
     if (type === 'standing') {
         const standingGeometry = new THREE.PlaneGeometry(6, 8);
-        const standingTexture = new THREE.TextureLoader().load('assets/obstacles/standing.png');
+        const standingTexture = new THREE.TextureLoader().load('assets/stand enemies/standing.png');
         const standingMaterial = new THREE.MeshBasicMaterial({ map: standingTexture, transparent: true });
         const standingEnemy = new THREE.Mesh(standingGeometry, standingMaterial);
         
@@ -104,7 +104,7 @@ function createObstacleGeometry(type) {
         return group;
     } else {
         const geometry = new THREE.PlaneGeometry(4, 2);
-        const texture = new THREE.TextureLoader().load('assets/obstacles/laying.png');
+        const texture = new THREE.TextureLoader().load('assets/mov enemies/laying.png');
         const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
         return new THREE.Mesh(geometry, material);
     }
@@ -112,14 +112,14 @@ function createObstacleGeometry(type) {
 
 function createCoinGeometry() {
     const geometry = new THREE.PlaneGeometry(2, 2);
-    const texture = new THREE.TextureLoader().load('assets/collectibles/coin.png');
+    const texture = new THREE.TextureLoader().load('assets/Perks/coin.png');
     const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
     return new THREE.Mesh(geometry, material);
 }
 
 function createRaptorBoostGeometry() {
     const geometry = new THREE.PlaneGeometry(2, 2);
-    const texture = new THREE.TextureLoader().load('assets/collectibles/raptor_boost.png');
+    const texture = new THREE.TextureLoader().load('assets/Perks/raptor_boost.png');
     const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
     return new THREE.Mesh(geometry, material);
 }
