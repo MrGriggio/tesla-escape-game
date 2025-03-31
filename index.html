@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesla Escape</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+        /* Ensure badge hover effect doesn't interfere with game */
+        .vibe-jam-badge {
+            transition: opacity 0.2s ease-in-out;
+        }
+        .vibe-jam-badge:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <script type="module" src="/src/main.js"></script>
+    <a target="_blank" 
+       href="https://jam.pieter.com" 
+       class="vibe-jam-badge"
+       style="font-family: 'system-ui', sans-serif; 
+              position: fixed; 
+              bottom: -1px; 
+              right: -1px; 
+              padding: 7px; 
+              font-size: 14px; 
+              font-weight: bold; 
+              background: #fff; 
+              color: #000; 
+              text-decoration: none; 
+              border-top-left-radius: 12px; 
+              z-index: 10000; 
+              border: 1px solid #fff;
+              user-select: none;
+              -webkit-tap-highlight-color: transparent;">
+        🕹️ Vibe Jam 2025
+    </a>
+</body>
+</html> 
