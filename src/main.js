@@ -23,38 +23,40 @@ let gameState = {
 
 // Scene setup
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87CEEB); // Set sky color
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// Texture loader with error handling
-const textureLoader = new THREE.TextureLoader();
-const loadTexture = (path, fallbackColor = 0x808080) => {
-    const texture = textureLoader.load(
-        path,
-        undefined,
-        undefined,
-        () => {
-            console.warn(`Failed to load texture: ${path}`);
-            material.color.setHex(fallbackColor);
-        }
-    );
-    return texture;
-};
-
 // Car setup
 const carGeometry = new THREE.PlaneGeometry(4, 1.5);
-const carTexture = loadTexture('/tesla-escape-game/Car/model3.png', 0x4287f5);
-const boostedCarTexture = loadTexture('/tesla-escape-game/Perks/car boosted.png', 0xff4400);
 const carMaterial = new THREE.MeshBasicMaterial({ 
-    map: carTexture, 
-    transparent: true,
-    color: 0xffffff 
+    color: 0x4287f5,
+    transparent: true 
 });
 const car = new THREE.Mesh(carGeometry, carMaterial);
 car.position.set(0, 0, 0);
 scene.add(car);
+
+// Load car textures
+const textureLoader = new THREE.TextureLoader();
+textureLoader.load(
+    '/tesla-escape-game/Car/model3.png',
+    (texture) => {
+        carMaterial.map = texture;
+        carMaterial.needsUpdate = true;
+    },
+    undefined,
+    () => console.warn('Failed to load car texture')
+);
+
+const boostedCarTexture = textureLoader.load(
+    '/tesla-escape-game/Perks/car boosted.png',
+    undefined,
+    undefined,
+    () => console.warn('Failed to load boosted car texture')
+);
 
 // Road setup
 const roadGeometry = new THREE.PlaneGeometry(800, 4.5);
@@ -118,11 +120,15 @@ function createObstacleGeometry(type) {
         standingEnemy.position.y = 4;
         
         // Load texture asynchronously
-        loadTexture(`/tesla-escape-game/stand enemies/${randomNum}.png`, 0xff0000)
-            .then(texture => {
+        textureLoader.load(
+            `/tesla-escape-game/stand enemies/${randomNum}.png`,
+            (texture) => {
                 standingMaterial.map = texture;
                 standingMaterial.needsUpdate = true;
-            });
+            },
+            undefined,
+            () => console.warn('Failed to load standing enemy texture')
+        );
         
         return group;
     } else {
@@ -132,15 +138,20 @@ function createObstacleGeometry(type) {
             color: 0xff0000,
             transparent: true 
         });
+        const mesh = new THREE.Mesh(geometry, material);
         
         // Load texture asynchronously
-        loadTexture(`/tesla-escape-game/mov enemies/${randomNum}.png`, 0xff0000)
-            .then(texture => {
+        textureLoader.load(
+            `/tesla-escape-game/mov enemies/${randomNum}.png`,
+            (texture) => {
                 material.map = texture;
                 material.needsUpdate = true;
-            });
+            },
+            undefined,
+            () => console.warn('Failed to load moving enemy texture')
+        );
         
-        return new THREE.Mesh(geometry, material);
+        return mesh;
     }
 }
 
@@ -150,15 +161,20 @@ function createCoinGeometry() {
         color: 0xffd700,
         transparent: true 
     });
+    const mesh = new THREE.Mesh(geometry, material);
     
     // Load texture asynchronously
-    loadTexture('/tesla-escape-game/Perks/coin.png', 0xffd700)
-        .then(texture => {
+    textureLoader.load(
+        '/tesla-escape-game/Perks/coin.png',
+        (texture) => {
             material.map = texture;
             material.needsUpdate = true;
-        });
+        },
+        undefined,
+        () => console.warn('Failed to load coin texture')
+    );
     
-    return new THREE.Mesh(geometry, material);
+    return mesh;
 }
 
 function createRaptorBoostGeometry() {
@@ -167,15 +183,20 @@ function createRaptorBoostGeometry() {
         color: 0xff4400,
         transparent: true 
     });
+    const mesh = new THREE.Mesh(geometry, material);
     
     // Load texture asynchronously
-    loadTexture('/tesla-escape-game/Perks/boost.png', 0xff4400)
-        .then(texture => {
+    textureLoader.load(
+        '/tesla-escape-game/Perks/boost.png',
+        (texture) => {
             material.map = texture;
             material.needsUpdate = true;
-        });
+        },
+        undefined,
+        () => console.warn('Failed to load boost texture')
+    );
     
-    return new THREE.Mesh(geometry, material);
+    return mesh;
 }
 
 // UI setup
@@ -514,7 +535,7 @@ function activateRaptorBoost() {
 
 function deactivateRaptorBoost() {
     gameState.raptorBoostActive = false;
-    car.material.map = carTexture;
+    car.material.map = carMaterial;
     boostTimerContainer.style.display = 'none';
 }
 
