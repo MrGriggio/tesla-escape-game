@@ -2,6 +2,7 @@
   "name": "tesla-escape-game",
   "version": "1.0.0",
   "description": "A fast-paced driving game where you navigate through obstacles, collect coins, and use power-ups to escape",
+  "type": "module",
   "main": "src/main.js",
   "scripts": {
     "dev": "vite",
