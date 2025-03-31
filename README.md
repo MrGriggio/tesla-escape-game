@@ -1,6 +1,29 @@
 # Tesla Escape Game
 
-A fast-paced driving game where you navigate through obstacles, collect coins, and use power-ups to escape! Built with Three.js and Vite.
+A thrilling browser-based game where you navigate a Tesla through various obstacles and challenges.
+
+## Play Now
+
+Visit [https://mrgriggio.github.io/tesla-escape-game](https://mrgriggio.github.io/tesla-escape-game) to play the game!
+
+## Development
+
+To run the game locally:
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start development server: `npm run dev`
+4. Open `http://localhost:8080` in your browser
+
+## Building
+
+To build the game for production:
+
+```bash
+npm run build
+```
+
+The built files will be in the `dist` directory.
 
 ## Features
 
@@ -14,51 +37,6 @@ A fast-paced driving game where you navigate through obstacles, collect coins, a
 - Tutorial system
 - Score tracking
 - Game over screen with restart options
-
-## How to Play
-
-1. Use Arrow Keys or WASD to move your car left and right
-2. Collect coins to increase your score
-3. Avoid obstacles to stay alive
-4. Collect Raptor Boost power-ups to become temporarily invincible
-5. Try to achieve the highest score possible!
-
-## Development
-
-### Prerequisites
-
-- Node.js (v14 or higher)
-- npm (v6 or higher)
-
-### Setup
-
-1. Clone the repository:
-```bash
-git clone https://github.com/MrGriggio/tesla-escape-game.git
-cd tesla-escape-game
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Start the development server:
-```bash
-npm run dev
-```
-
-4. Open your browser and navigate to `http://localhost:8080`
-
-### Building for Production
-
-To create a production build:
-
-```bash
-npm run build
-```
-
-The built files will be in the `dist` directory.
 
 ## Technologies Used
 
