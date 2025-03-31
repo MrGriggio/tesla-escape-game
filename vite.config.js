@@ -10,14 +10,17 @@ export default {
       output: {
         manualChunks: undefined,
         assetFileNames: (assetInfo) => {
-          const info = assetInfo.name.split('.');
-          const ext = info[info.length - 1];
           if (/\.(mp3|png|jpeg|jpg|gif|svg)$/.test(assetInfo.name)) {
-            return `assets/${assetInfo.name}`;
+            // Preserve the original path structure
+            return assetInfo.name;
           }
           return `assets/[name]-[hash][extname]`;
         }
       }
-    }
-  }
+    },
+    // Ensure all assets are included in the build
+    copyPublicDir: true
+  },
+  // Add public directory configuration
+  publicDir: 'assets'
 }
