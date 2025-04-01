@@ -228,6 +228,7 @@ menuContainer.style.alignItems = 'center';
 menuContainer.style.justifyContent = 'center';
 menuContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
 menuContainer.style.backdropFilter = 'blur(5px)';
+menuContainer.style.zIndex = '2000';
 document.body.appendChild(menuContainer);
 
 const playButton = document.createElement('button');
