@@ -42,7 +42,7 @@ scene.add(car);
 // Load car textures
 const textureLoader = new THREE.TextureLoader();
 textureLoader.load(
-    '/Car/model3.png',
+    '/tesla-escape-game/Car/model3.png',
     (texture) => {
         carMaterial.map = texture;
         carMaterial.needsUpdate = true;
@@ -55,7 +55,7 @@ textureLoader.load(
 );
 
 const boostedCarTexture = textureLoader.load(
-    '/Perks/car boosted.png',
+    '/tesla-escape-game/Perks/car boosted.png',
     undefined,
     undefined,
     () => {
@@ -127,7 +127,7 @@ function createObstacleGeometry(type) {
         
         // Load texture asynchronously
         textureLoader.load(
-            `/stand enemies/${randomNum}.png`,
+            `/tesla-escape-game/stand enemies/${randomNum}.png`,
             (texture) => {
                 standingMaterial.map = texture;
                 standingMaterial.needsUpdate = true;
@@ -151,7 +151,7 @@ function createObstacleGeometry(type) {
         
         // Load texture asynchronously
         textureLoader.load(
-            `/mov enemies/${randomNum}.png`,
+            `/tesla-escape-game/mov enemies/${randomNum}.png`,
             (texture) => {
                 material.map = texture;
                 material.needsUpdate = true;
@@ -177,7 +177,7 @@ function createCoinGeometry() {
     
     // Load texture asynchronously
     textureLoader.load(
-        '/Perks/coin.png',
+        '/tesla-escape-game/Perks/coin.png',
         (texture) => {
             material.map = texture;
             material.needsUpdate = true;
@@ -202,7 +202,7 @@ function createRaptorBoostGeometry() {
     
     // Load texture asynchronously
     textureLoader.load(
-        '/Perks/boost.png',
+        '/tesla-escape-game/Perks/boost.png',
         (texture) => {
             material.map = texture;
             material.needsUpdate = true;
@@ -351,7 +351,7 @@ boostProgressContainer.appendChild(boostProgress);
 
 // Badge
 const badge = document.createElement('img');
-badge.src = '/menu/menu.png';
+badge.src = '/tesla-escape-game/menu/menu.png';
 badge.style.position = 'absolute';
 badge.style.bottom = '20px';
 badge.style.right = '20px';
@@ -391,7 +391,7 @@ function initAudio() {
         gameState.audioContext = new (window.AudioContext || window.webkitAudioContext)();
         
         // Load and set up background music
-        fetch('/soundtrack/soundtrack.mp3')
+        fetch('/tesla-escape-game/soundtrack/soundtrack.mp3')
             .then(response => response.arrayBuffer())
             .then(arrayBuffer => gameState.audioContext.decodeAudioData(arrayBuffer))
             .then(audioBuffer => {
