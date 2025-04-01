@@ -48,20 +48,26 @@ textureLoader.load(
         carMaterial.needsUpdate = true;
     },
     undefined,
-    () => console.warn('Failed to load car texture')
+    () => {
+        console.warn('Failed to load car texture');
+        carMaterial.color.setHex(0x4287f5); // Blue fallback
+    }
 );
 
 const boostedCarTexture = textureLoader.load(
     '/tesla-escape-game/Perks/car boosted.png',
     undefined,
     undefined,
-    () => console.warn('Failed to load boosted car texture')
+    () => {
+        console.warn('Failed to load boosted car texture');
+        carMaterial.color.setHex(0xff4400); // Orange fallback
+    }
 );
 
 // Road setup
 const roadGeometry = new THREE.PlaneGeometry(800, 4.5);
 const roadMaterial = new THREE.MeshBasicMaterial({ 
-    color: 0x333333,
+    color: 0x333333, // Dark gray
     side: THREE.DoubleSide
 });
 const road = new THREE.Mesh(roadGeometry, roadMaterial);
@@ -70,7 +76,7 @@ scene.add(road);
 // Background setup
 const grassGeometry = new THREE.PlaneGeometry(2000, 2000);
 const grassMaterial = new THREE.MeshBasicMaterial({ 
-    color: 0x228B22,
+    color: 0x228B22, // Forest green
     transparent: true,
     depthWrite: false 
 });
@@ -81,7 +87,7 @@ scene.add(grassBackground);
 
 const skyGeometry = new THREE.PlaneGeometry(2000, 800);
 const skyMaterial = new THREE.MeshBasicMaterial({ 
-    color: 0x87CEEB,
+    color: 0x87CEEB, // Light blue
     transparent: true,
     depthWrite: false 
 });
@@ -102,7 +108,7 @@ function createObstacleGeometry(type) {
         const standingGeometry = new THREE.PlaneGeometry(6, 8);
         const randomNum = Math.floor(Math.random() * 3) + 1;
         const standingMaterial = new THREE.MeshBasicMaterial({ 
-            color: 0xff0000,
+            color: 0xff0000, // Red fallback
             transparent: true 
         });
         const standingEnemy = new THREE.Mesh(standingGeometry, standingMaterial);
@@ -127,7 +133,10 @@ function createObstacleGeometry(type) {
                 standingMaterial.needsUpdate = true;
             },
             undefined,
-            () => console.warn('Failed to load standing enemy texture')
+            () => {
+                console.warn('Failed to load standing enemy texture');
+                standingMaterial.color.setHex(0xff0000); // Red fallback
+            }
         );
         
         return group;
@@ -135,7 +144,7 @@ function createObstacleGeometry(type) {
         const geometry = new THREE.PlaneGeometry(4, 2);
         const randomNum = Math.floor(Math.random() * 5) + 1;
         const material = new THREE.MeshBasicMaterial({ 
-            color: 0xff0000,
+            color: 0xff0000, // Red fallback
             transparent: true 
         });
         const mesh = new THREE.Mesh(geometry, material);
@@ -148,7 +157,10 @@ function createObstacleGeometry(type) {
                 material.needsUpdate = true;
             },
             undefined,
-            () => console.warn('Failed to load moving enemy texture')
+            () => {
+                console.warn('Failed to load moving enemy texture');
+                material.color.setHex(0xff0000); // Red fallback
+            }
         );
         
         return mesh;
@@ -158,7 +170,7 @@ function createObstacleGeometry(type) {
 function createCoinGeometry() {
     const geometry = new THREE.PlaneGeometry(2, 2);
     const material = new THREE.MeshBasicMaterial({ 
-        color: 0xffd700,
+        color: 0xffd700, // Gold fallback
         transparent: true 
     });
     const mesh = new THREE.Mesh(geometry, material);
@@ -171,7 +183,10 @@ function createCoinGeometry() {
             material.needsUpdate = true;
         },
         undefined,
-        () => console.warn('Failed to load coin texture')
+        () => {
+            console.warn('Failed to load coin texture');
+            material.color.setHex(0xffd700); // Gold fallback
+        }
     );
     
     return mesh;
@@ -180,7 +195,7 @@ function createCoinGeometry() {
 function createRaptorBoostGeometry() {
     const geometry = new THREE.PlaneGeometry(2, 2);
     const material = new THREE.MeshBasicMaterial({ 
-        color: 0xff4400,
+        color: 0xff4400, // Orange fallback
         transparent: true 
     });
     const mesh = new THREE.Mesh(geometry, material);
@@ -193,7 +208,10 @@ function createRaptorBoostGeometry() {
             material.needsUpdate = true;
         },
         undefined,
-        () => console.warn('Failed to load boost texture')
+        () => {
+            console.warn('Failed to load boost texture');
+            material.color.setHex(0xff4400); // Orange fallback
+        }
     );
     
     return mesh;
